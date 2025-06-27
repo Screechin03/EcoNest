@@ -15,7 +15,6 @@ import BookingSummary from './BookingSummary.jsx'
 import CitiesPage from './CitiesPage.jsx'
 import Contact from './Contact.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
-import AuthSuccess from './AuthSuccess.jsx'
 import { RedirectIfAuthenticated, ProtectedRoute } from './utils/AuthUtils.jsx'
 import Footer from './components/Footer.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
@@ -79,7 +78,6 @@ function App() {
               <Route path="/booking-summary" element={<BookingSummary />} />
               <Route path="/cities" element={<CitiesPage />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/auth/success" element={<AuthSuccess />} />
               {/* Catch 404 errors with NotFoundPage */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
