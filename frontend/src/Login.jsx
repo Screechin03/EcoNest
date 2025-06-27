@@ -32,18 +32,41 @@ const Login = () => {
         setLoading(true);
         setError('');
         try {
-            const data = await fetchWithCORS(`${API_URL}/auth/login`, {
+            console.log('Attempting login with:', { email });
+            
+            // Use fetch directly for login to avoid credential issues
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
                 body: JSON.stringify({ email, password }),
+                mode: 'cors',
+                credentials: 'omit' // Don't include credentials for auth endpoints
             });
+            
+            const data = await response.json();
+            console.log('Login response status:', response.status);
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Invalid credentials');
+            }
 
+            if (!data.token) {
+                throw new Error('No authentication token received');
+            }
+
+            console.log('Login successful');
             // Save token and user info
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
+            
             // Redirect using React Router's navigate
             navigate('/');
         } catch (err) {
-            setError('Something went wrong. Please try again.');
+            console.error('Login error:', err);
+            setError(err.message || 'Something went wrong. Please try again.');
         }
         setLoading(false);
     };
@@ -118,12 +141,7 @@ const Login = () => {
                             <div className="absolute inset-0 flex items-center">
                                 <div className="w-full border-t border-gray-300"></div>
                             </div>
-                            <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">Or</span>
-                            </div>
                         </div>
-
-                        <GoogleSignInButton text="Sign in with Google" />
                     </form>
                     <div className="text-center text-gray-700 mt-4">
                         Are you new? <Link to="/register" className="text-blue-700 hover:underline">Create an Account</Link>

@@ -5,15 +5,16 @@ export const fetchWithCORS = async (url, options = {}) => {
         ? `${url}${url.includes('?') ? '&' : '?'}_t=${Date.now()}`
         : url;
 
-    // Default credentials mode - switch to 'omit' to avoid CORS issues in production
-    // This is a global toggle that can be set based on environment
-    const defaultCredentialsMode = window.location.hostname.includes('localhost') ? 'include' : 'omit';
+    console.log(`Fetching ${options.method || 'GET'} ${url}`);
+
+    // For login/auth endpoints, always use 'omit' to avoid CORS issues
+    const isAuthEndpoint = url.includes('/auth/');
+    const defaultCredentialsMode = isAuthEndpoint ? 'omit' : 'include';
 
     const defaultOptions = {
-        credentials: options.credentials || defaultCredentialsMode, // Adaptive credentials mode
+        credentials: options.credentials || defaultCredentialsMode,
         headers: {
             'Content-Type': 'application/json',
-            // Add CORS-specific headers that might help
             'Accept': 'application/json',
             ...options.headers
         },
@@ -29,19 +30,37 @@ export const fetchWithCORS = async (url, options = {}) => {
         }
     };
 
+    console.log('Request options:', {
+        method: mergedOptions.method,
+        credentials: mergedOptions.credentials,
+        headers: Object.keys(mergedOptions.headers)
+    });
+
     try {
         // Use the URL with cache busting parameter for GET requests
         const response = await fetch(urlWithCache, mergedOptions);
+        console.log('Response status:', response.status);
 
-        // If response is not ok, throw an error
+        // If response is not ok, try to parse error json
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || `Request failed with status ${response.status}`);
+            let errorMessage = `Request failed with status ${response.status}`;
+            try {
+                const errorData = await response.json();
+                console.error('Error response:', errorData);
+                errorMessage = errorData.error || errorMessage;
+            } catch (parseError) {
+                console.error('Could not parse error response:', parseError);
+            }
+            throw new Error(errorMessage);
         }
 
         // Parse and return the response data
-        return await response.json();
+        const data = await response.json();
+        console.log('Response data keys:', Object.keys(data));
+        return data;
     } catch (error) {
+        console.error('Fetch error:', error);
+        
         // Special handling for CORS errors
         if (error.message.includes('NetworkError') ||
             error.message.includes('Failed to fetch') ||
@@ -59,20 +78,29 @@ export const fetchWithCORS = async (url, options = {}) => {
                         ...mergedOptions,
                         credentials: 'omit'
                     };
+                    console.log('Retry options:', {
+                        method: retryOptions.method,
+                        credentials: retryOptions.credentials,
+                        headers: Object.keys(retryOptions.headers)
+                    });
+                    
                     const retryResponse = await fetch(urlWithCache, retryOptions);
+                    console.log('Retry response status:', retryResponse.status);
+                    
                     if (retryResponse.ok) {
-                        return await retryResponse.json();
+                        const data = await retryResponse.json();
+                        console.log('Retry successful, response data keys:', Object.keys(data));
+                        return data;
+                    } else {
+                        const errorData = await retryResponse.json().catch(() => ({}));
+                        console.error('Retry failed with error data:', errorData);
                     }
                 } catch (retryError) {
                     console.error('Retry also failed:', retryError);
-                    // Continue to fallback data
                 }
             }
         }
 
-        console.error('Fetch error:', error);
         throw error;
     }
 };
-
-export default fetchWithCORS;

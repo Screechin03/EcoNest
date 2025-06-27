@@ -23,23 +23,35 @@ const Register = () => {
         setLoading(true);
         setError('');
         try {
-            const res = await fetch(`${API_URL}/auth/register`, {
+            console.log('Attempting registration with:', { email: form.email });
+            
+            const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
                 body: JSON.stringify(form),
+                mode: 'cors',
+                credentials: 'omit' // Don't include credentials for auth endpoints
             });
-            const data = await res.json();
-            if (!res.ok) {
-                setError(data.error || 'Registration failed');
-            } else {
-                // Save token and user info (optional)
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data.user));
-                // Redirect to home or login
-                navigate('/');
+            
+            const data = await response.json();
+            console.log('Registration response status:', response.status);
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Registration failed');
             }
+            
+            console.log('Registration successful');
+            // Save token and user info
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            // Redirect to home
+            navigate('/');
         } catch (err) {
-            setError('Something went wrong. Please try again.');
+            console.error('Registration error:', err);
+            setError(err.message || 'Something went wrong. Please try again.');
         }
         setLoading(false);
     };
@@ -122,12 +134,8 @@ const Register = () => {
                             <div className="absolute inset-0 flex items-center">
                                 <div className="w-full border-t border-gray-100"></div>
                             </div>
-                            <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-[rgba(0,0,0,0.5)] text-white">Or</span>
-                            </div>
                         </div>
 
-                        <GoogleSignInButton text="Sign up with Google" />
                         <div className="text-center text-gray-100 mt-4">
                             Already have an account? <a href="/login" className="text-blue-300 hover:underline">Login</a>
                         </div>
