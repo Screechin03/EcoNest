@@ -102,10 +102,8 @@ app.use(session({
 }));
 
 // Debug environment variables
-console.log('Environment check for Google OAuth:');
+console.log('Environment check:');
 console.log('- SESSION_SECRET:', process.env.SESSION_SECRET ? '✅ Set' : '❌ Missing');
-console.log('- GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID ? '✅ Set' : '❌ Missing');
-console.log('- GOOGLE_CLIENT_SECRET:', process.env.GOOGLE_CLIENT_SECRET ? '✅ Set' : '❌ Missing');
 
 // Initialize passport
 const passport = setupPassport();
