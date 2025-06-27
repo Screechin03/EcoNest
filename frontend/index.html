@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boulevard - Premium Accommodations</title>
+  <!-- Error handling script -->
+  <script>
+    window.addEventListener('error', function (event) {
+      console.error('Global error caught:', event.error);
+      // You could report to an error tracking service here
+    });
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <!-- Add a fallback in case React fails to load properly -->
+  <div id="error-container"
+    style="display: none; padding: 20px; margin: 20px; border: 1px solid #f44336; color: #f44336; border-radius: 4px;">
+    <h2>Something went wrong</h2>
+    <p>We're having trouble loading the application. Please try refreshing the page.</p>
+  </div>
+
+  <script type="module" src="/src/main.jsx"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- SPA routing handler to prevent 404s -->
+  <script>
+    // This script helps prevent 404 errors with SPA routing on Render/Netlify/Vercel
+    // Store current path in localStorage to restore after page refresh
+    if (typeof window !== 'undefined' && window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+      localStorage.setItem('boulevard_last_path', window.location.pathname + window.location.search);
+      console.log('Stored current path:', window.location.pathname);
+    }
+
+    // If we reached this page due to a 404, try to recover
+    if (document.referrer && document.referrer.includes(window.location.hostname) &&
+      window.location.pathname === '/' || window.location.pathname === '/index.html') {
+      const lastPath = localStorage.getItem('boulevard_last_path');
+      if (lastPath) {
+        console.log('Attempting to recover from 404 to:', lastPath);
+        // Add a small delay to ensure the app has time to initialize
+        setTimeout(function () {
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, null, lastPath);
+            // Trigger a popstate event for React Router to detect
+            window.dispatchEvent(new Event('popstate'));
+          }
+        }, 300);
+      }
+    }
+  </script>
+
+  <!-- Check if React loaded correctly -->
+  <script>
+    setTimeout(function () {
+      // Modern React with Vite doesn't expose React globally
+      // Instead check if the root has children to determine if React rendered
+      var rootElement = document.getElementById('root');
+      if (rootElement && (!rootElement.childNodes || rootElement.childNodes.length === 0)) {
+        document.getElementById('error-container').style.display = 'block';
+        console.error('React failed to load properly');
+      }
+    }, 3000); // Give more time for app to load
+  </script>
+</body>
+
+</html>

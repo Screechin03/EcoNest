@@ -1,0 +1,1 @@
+const token = localStorage.getItem("token"); fetch("https://econest-70qt.onrender.com/api/bookings", { headers: { Authorization: `Bearer ${token}` } }).then(res => res.json()).then(console.log).catch(console.error);
