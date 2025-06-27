@@ -3,7 +3,6 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { isAuthenticated } from './utils/AuthUtils'
 import { API_URL } from './config'
 import { fetchWithCORS } from './services/fetchWithCORS'
-import GoogleSignInButton from './components/GoogleSignInButton'
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -13,12 +12,10 @@ const Login = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
-    // Check for error params from Google auth
+    // Check for error params
     useEffect(() => {
         const errorParam = searchParams.get('error');
-        if (errorParam === 'google_auth_failed') {
-            setError('Google authentication failed. Please try again or use email/password.');
-        } else if (errorParam === 'auth_failed') {
+        if (errorParam === 'auth_failed') {
             setError('Authentication failed. Please try again.');
         }
     }, [searchParams]);

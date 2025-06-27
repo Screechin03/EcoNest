@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { isAuthenticated } from './utils/AuthUtils'
 import { API_URL } from './config'
-import GoogleSignInButton from './components/GoogleSignInButton'
 
 const Register = () => {
     const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', currentAddress: '' });
