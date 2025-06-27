@@ -11,7 +11,6 @@ import newsletterRoutes from './routes/newsletterRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import statsRoutes from './routes/statsRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
-import googleAuthRoutes from './routes/googleAuthRoutes.js';
 import setupPassport from './config/passport.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -114,7 +113,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/auth', authRoutes);
-app.use('/api/auth', googleAuthRoutes); // Google auth routes
 app.use('/api/listings', listingRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/payments', paymentRoutes);
