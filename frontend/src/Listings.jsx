@@ -11,6 +11,7 @@ const Listings = () => {
         description: '',
         price: '',
         location: '',
+        city: '',
         tags: '',
         ownerEmail: '',
         ownerPhone: '',
@@ -61,6 +62,7 @@ const Listings = () => {
         if (!form.title.trim()) errors.title = 'Title is required';
         if (!form.price || form.price <= 0) errors.price = 'Valid price is required';
         if (!form.location.trim()) errors.location = 'Location is required';
+        if (!form.city.trim()) errors.city = 'City is required';
         if (!form.description.trim()) errors.description = 'Description is required';
         if (images.length === 0) errors.images = 'At least one image is required';
 
@@ -128,6 +130,7 @@ const Listings = () => {
         formData.append('description', form.description);
         formData.append('price', parseInt(form.price, 10));
         formData.append('location', form.location);
+        formData.append('city', form.city);
         formData.append('ownerEmail', form.ownerEmail);
         formData.append('ownerPhone', form.ownerPhone);
 
@@ -268,32 +271,50 @@ const Listings = () => {
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             <FaMapMarkerAlt className="inline mr-1" />
-                                            Location *
+                                            City *
                                         </label>
                                         <input
+                                            type="text"
+                                            name="city"
+                                            value={form.city}
+                                            onChange={handleChange}
+                                            placeholder="Enter city name (e.g., Mumbai, Delhi)"
+                                            className={`w-full p-4 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 ${formValidation.city ? 'border-red-500' : 'border-gray-300'
+                                                }`}
+                                        />
+                                        {formValidation.city && (
+                                            <p className="mt-1 text-sm text-red-600">{formValidation.city}</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <FaMapMarkerAlt className="inline mr-1" />
+                                        Location *
+                                    </label>                                        <input
                                             type="text"
                                             name="location"
                                             value={form.location}
                                             onChange={handleChange}
-                                            placeholder="City, Area, Landmark"
+                                            placeholder="Area, Landmark, Address"
                                             className={`w-full p-4 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 ${formValidation.location ? 'border-red-500' : 'border-gray-300'
-                                                }`}
-                                        />
-                                        {formValidation.location && (
-                                            <p className="mt-1 text-sm text-red-600">{formValidation.location}</p>
-                                        )}
-                                        {form.location.length > 2 && (
-                                            <div className="mt-2 p-3 bg-blue-50 rounded-lg">
-                                                <div className="flex items-center gap-2 text-sm text-blue-800">
-                                                    <FaInfoCircle />
-                                                    <span>Estimated rent range for {form.location}:
-                                                        ${estimatePrice(form.location).min.toLocaleString()} -
-                                                        ${estimatePrice(form.location).max.toLocaleString()}/month
-                                                    </span>
-                                                </div>
+                                            }`}
+                                    />
+                                    {formValidation.location && (
+                                        <p className="mt-1 text-sm text-red-600">{formValidation.location}</p>
+                                    )}
+                                    {form.location.length > 2 && (
+                                        <div className="mt-2 p-3 bg-blue-50 rounded-lg">
+                                            <div className="flex items-center gap-2 text-sm text-blue-800">
+                                                <FaInfoCircle />
+                                                <span>Estimated rent range for {form.location}:
+                                                    ${estimatePrice(form.location).min.toLocaleString()} -
+                                                    ${estimatePrice(form.location).max.toLocaleString()}/month
+                                                </span>
                                             </div>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}

@@ -17,7 +17,6 @@ const Navbar = () => {
     const [firstName, setFirstName] = useState('');
     const sidebarRef = useRef(null);
 
-    // Close sidebar when clicking outside
     useEffect(() => {
         function handleClickOutside(event) {
             if (sidebarRef.current && !sidebarRef.current.contains(event.target) && menuOpen) {
