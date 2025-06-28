@@ -1,15 +1,12 @@
-// Update API URL config to use environment variables
-import.meta.env = import.meta.env || {};
+// Production API URL by default
+let apiUrl = 'https://econest-70qt.onrender.com/api';
 
-// Define API URLs based on environment
-let apiUrl;
-
-// Check if running in development or production
-if (import.meta.env.DEV) {
+// Check if running in development based on environment
+// We can't modify import.meta.env, but we can read from it
+if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV) {
   apiUrl = 'http://localhost:8000/api';
   console.log('Development mode: Using local API', apiUrl);
 } else {
-  apiUrl = 'https://econest-70qt.onrender.com/api';
   console.log('Production mode: Using remote API', apiUrl);
 }
 

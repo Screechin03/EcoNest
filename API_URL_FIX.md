@@ -4,13 +4,51 @@
 
 The application has been rebranded from "EcoNest" to "Boulevard", but the backend API is still deployed at the old URL (https://econest-70qt.onrender.com/api). This inconsistency caused the listings routes and popular listings functionality to break.
 
+## Build Error Fix (June 28, 2025)
+
+The frontend build was failing with the following error:
+```
+Cannot reassign a variable declared with `const`
+import.meta.env = import.meta.env || {};
+```
+
+This error occurred because `import.meta.env` is a read-only property in Vite/Rollup, and we were attempting to assign a value to it.
+
+### Fix Applied
+Updated the `src/config.js` file to:
+
+1. Remove the problematic line: `import.meta.env = import.meta.env || {}`
+2. Use a safer approach for environment detection:
+   ```javascript
+   // Check if running in development based on environment
+   // We can't modify import.meta.env, but we can read from it
+   if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV) {
+     apiUrl = 'http://localhost:8000/api';
+     console.log('Development mode: Using local API', apiUrl);
+   } else {
+     apiUrl = 'https://econest-70qt.onrender.com/api';
+     console.log('Production mode: Using remote API', apiUrl);
+   }
+   ```
+3. Default to production URL to ensure the app works even if environment detection fails
+
 ## Temporary Fix Implemented
 
 As a temporary fix, we've reverted the API URL in the frontend configuration to point back to the existing backend service, while keeping the Boulevard branding in the frontend application.
 
-Files updated:
-- `/Users/screechin_03/EcoNest/frontend/src/config.js`
-- `/Users/screechin_03/EcoNest/frontend/.env`
+## How to Test the Fix
+
+1. Run a production build locally:
+   ```bash
+   cd frontend
+   npm run build
+   ```
+2. Verify no build errors related to `import.meta.env`
+3. Deploy to Render and confirm successful build
+4. Test the login and registration functionality using the test page: `/login-test.html`
+
+## Related Changes
+- Also updated `backend/verify-env.js` to remove references to Google OAuth credentials, which are no longer used in the application.
 
 ## Future Migration Steps
 
