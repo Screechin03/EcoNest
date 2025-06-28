@@ -24,7 +24,7 @@ const Navbar = () => {
                 setMenuOpen(false);
             }
         }
-        
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
@@ -176,23 +176,22 @@ const Navbar = () => {
                             </Link>
                         </div>
                     )}
-                    
+
                     {/* Mobile menu toggle button */}
-                    <button 
-                        onClick={() => setMenuOpen(true)} 
+                    <button
+                        onClick={() => setMenuOpen(true)}
                         className="lg:hidden text-gray-700 hover:text-gray-900 focus:outline-none"
                     >
                         <FaBars size={24} />
                     </button>
                 </div>
             </div>
-            
+
             {/* Mobile Side Navbar */}
-            <div 
+            <div
                 ref={sidebarRef}
-                className={`fixed top-0 right-0 h-full w-[280px] bg-white shadow-2xl z-[10000] transform transition-transform duration-300 ease-in-out ${
-                    menuOpen ? 'translate-x-0' : 'translate-x-full'
-                }`}
+                className={`fixed top-0 right-0 h-full w-[280px] bg-white shadow-2xl z-[10000] transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
+                    }`}
             >
                 <div className="flex flex-col h-full">
                     {/* Close button and header */}
@@ -201,14 +200,14 @@ const Navbar = () => {
                             <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-full border border-gray-300" />
                             <h3 className="text-xl font-semibold">Boulevard</h3>
                         </div>
-                        <button 
-                            onClick={() => setMenuOpen(false)} 
+                        <button
+                            onClick={() => setMenuOpen(false)}
                             className="text-gray-500 hover:text-gray-700"
                         >
                             <FaTimes size={24} />
                         </button>
                     </div>
-                    
+
                     {/* Mobile search */}
                     <div className="p-4 border-b">
                         <form onSubmit={handleSearch} className="flex items-center bg-gray-100 rounded-full px-3 py-2">
@@ -224,50 +223,50 @@ const Navbar = () => {
                             </button>
                         </form>
                     </div>
-                    
+
                     {/* Navigation Links */}
                     <div className="flex-1 overflow-y-auto">
                         <div className="py-2">
-                            <Link 
-                                to="/" 
+                            <Link
+                                to="/"
                                 className={`flex items-center gap-3 px-5 py-3 hover:bg-gray-100 ${location.pathname === '/' ? 'text-orange-500 font-semibold' : 'text-gray-700'}`}
                                 onClick={() => setMenuOpen(false)}
                             >
                                 <FaHome size={20} />
                                 <span>Home</span>
                             </Link>
-                            
-                            <Link 
-                                to="/listing" 
+
+                            <Link
+                                to="/listing"
                                 className={`flex items-center gap-3 px-5 py-3 hover:bg-gray-100 ${location.pathname === '/listing' ? 'text-orange-500 font-semibold' : 'text-gray-700'}`}
                                 onClick={() => setMenuOpen(false)}
                             >
                                 <FaList size={20} />
                                 <span>Listings</span>
                             </Link>
-                            
-                            <Link 
-                                to="/bookings" 
+
+                            <Link
+                                to="/bookings"
                                 className={`flex items-center gap-3 px-5 py-3 hover:bg-gray-100 ${location.pathname === '/bookings' ? 'text-orange-500 font-semibold' : 'text-gray-700'}`}
                                 onClick={() => setMenuOpen(false)}
                             >
                                 <FaSearch size={20} />
                                 <span>Browse Properties</span>
                             </Link>
-                            
+
                             {firstName && (
                                 <>
-                                    <Link 
-                                        to="/my-bookings" 
+                                    <Link
+                                        to="/my-bookings"
                                         className={`flex items-center gap-3 px-5 py-3 hover:bg-gray-100 ${location.pathname === '/my-bookings' ? 'text-orange-500 font-semibold' : 'text-gray-700'}`}
                                         onClick={() => setMenuOpen(false)}
                                     >
                                         <FaList size={20} />
                                         <span>My Bookings</span>
                                     </Link>
-                                    
-                                    <Link 
-                                        to="/owner-bookings" 
+
+                                    <Link
+                                        to="/owner-bookings"
                                         className={`flex items-center gap-3 px-5 py-3 hover:bg-gray-100 ${location.pathname === '/owner-bookings' ? 'text-orange-500 font-semibold' : 'text-gray-700'}`}
                                         onClick={() => setMenuOpen(false)}
                                     >
@@ -276,18 +275,18 @@ const Navbar = () => {
                                     </Link>
                                 </>
                             )}
-                            
-                            <Link 
-                                to="/contact" 
+
+                            <Link
+                                to="/contact"
                                 className={`flex items-center gap-3 px-5 py-3 hover:bg-gray-100 ${location.pathname === '/contact' ? 'text-orange-500 font-semibold' : 'text-gray-700'}`}
                                 onClick={() => setMenuOpen(false)}
                             >
                                 <FaPhone size={20} />
                                 <span>Contact</span>
                             </Link>
-                            
-                            <Link 
-                                to="/createListing" 
+
+                            <Link
+                                to="/createListing"
                                 className={`flex items-center gap-3 px-5 py-3 hover:bg-gray-100 ${location.pathname === '/createListing' ? 'text-orange-500 font-semibold' : 'text-gray-700'}`}
                                 onClick={() => setMenuOpen(false)}
                             >
@@ -296,7 +295,7 @@ const Navbar = () => {
                             </Link>
                         </div>
                     </div>
-                    
+
                     {/* Auth Section - Mobile */}
                     <div className="border-t p-4">
                         {isAuthenticated() ? (
@@ -338,7 +337,7 @@ const Navbar = () => {
             </div>
         </>
     )
-    )
+
 }
 
 export default Navbar
