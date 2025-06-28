@@ -60,7 +60,7 @@ export const fetchWithCORS = async (url, options = {}) => {
         return data;
     } catch (error) {
         console.error('Fetch error:', error);
-        
+
         // Special handling for CORS errors
         if (error.message.includes('NetworkError') ||
             error.message.includes('Failed to fetch') ||
@@ -83,10 +83,10 @@ export const fetchWithCORS = async (url, options = {}) => {
                         credentials: retryOptions.credentials,
                         headers: Object.keys(retryOptions.headers)
                     });
-                    
+
                     const retryResponse = await fetch(urlWithCache, retryOptions);
                     console.log('Retry response status:', retryResponse.status);
-                    
+
                     if (retryResponse.ok) {
                         const data = await retryResponse.json();
                         console.log('Retry successful, response data keys:', Object.keys(data));

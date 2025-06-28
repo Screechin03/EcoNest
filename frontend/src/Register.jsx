@@ -24,10 +24,10 @@ const Register = () => {
         setError('');
         try {
             console.log('Attempting registration with:', { email: form.email });
-            
+
             const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
@@ -35,14 +35,14 @@ const Register = () => {
                 mode: 'cors',
                 credentials: 'omit' // Don't include credentials for auth endpoints
             });
-            
+
             const data = await response.json();
             console.log('Registration response status:', response.status);
-            
+
             if (!response.ok) {
                 throw new Error(data.error || 'Registration failed');
             }
-            
+
             console.log('Registration successful');
             // Save token and user info
             localStorage.setItem('token', data.token);

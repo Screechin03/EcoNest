@@ -33,7 +33,7 @@ const Login = () => {
         setError('');
         try {
             console.log('Attempting login with:', { email });
-            
+
             // Use fetch directly for login to avoid credential issues
             const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
@@ -45,10 +45,10 @@ const Login = () => {
                 mode: 'cors',
                 credentials: 'omit' // Don't include credentials for auth endpoints
             });
-            
+
             const data = await response.json();
             console.log('Login response status:', response.status);
-            
+
             if (!response.ok) {
                 throw new Error(data.error || 'Invalid credentials');
             }
@@ -61,7 +61,7 @@ const Login = () => {
             // Save token and user info
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-            
+
             // Redirect using React Router's navigate
             navigate('/');
         } catch (err) {

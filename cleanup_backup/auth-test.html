@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,40 +13,49 @@
             padding: 20px;
             line-height: 1.6;
         }
+
         .container {
             display: flex;
             gap: 20px;
         }
+
         .panel {
             flex: 1;
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 8px;
         }
+
         .result {
             margin-top: 15px;
             padding: 10px;
             border-radius: 4px;
             min-height: 100px;
         }
+
         .success {
             background-color: #d4edda;
             color: #155724;
         }
+
         .error {
             background-color: #f8d7da;
             color: #721c24;
         }
+
         .loading {
             background-color: #e2e3e5;
             color: #383d41;
         }
-        input, button {
+
+        input,
+        button {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
             box-sizing: border-box;
         }
+
         button {
             background-color: #007bff;
             color: white;
@@ -54,12 +64,15 @@
             cursor: pointer;
             font-weight: bold;
         }
+
         button:hover {
             background-color: #0069d9;
         }
+
         h2 {
             margin-top: 0;
         }
+
         pre {
             white-space: pre-wrap;
             word-break: break-word;
@@ -71,10 +84,11 @@
         }
     </style>
 </head>
+
 <body>
     <h1>EcoNest Authentication Test Suite</h1>
     <p>Use this page to test login and registration functionality after removing Google Authentication.</p>
-    
+
     <div class="container">
         <div class="panel">
             <h2>Login Test</h2>
@@ -83,7 +97,7 @@
             <button id="test-login">Test Login</button>
             <div id="login-result" class="result">Results will appear here...</div>
         </div>
-        
+
         <div class="panel">
             <h2>Register Test</h2>
             <input type="text" id="register-name" placeholder="Name" value="Test User">
@@ -98,19 +112,19 @@
     <script>
         // Set a random email for registration to avoid duplicates
         document.getElementById('register-email').value = `testuser${Date.now()}@example.com`;
-        
+
         // API URL
         const API_URL = 'https://econest-70qt.onrender.com/api';
-        
+
         // Test Login
         document.getElementById('test-login').addEventListener('click', async () => {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             const resultDiv = document.getElementById('login-result');
-            
+
             resultDiv.innerHTML = 'Testing login...';
             resultDiv.className = 'result loading';
-            
+
             try {
                 const response = await fetch(`${API_URL}/auth/login`, {
                     method: 'POST',
@@ -119,9 +133,9 @@
                     mode: 'cors',
                     credentials: 'omit'
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (response.ok && data.token) {
                     resultDiv.className = 'result success';
                     resultDiv.innerHTML = `
@@ -145,7 +159,7 @@
                 `;
             }
         });
-        
+
         // Test Registration
         document.getElementById('test-register').addEventListener('click', async () => {
             const name = document.getElementById('register-name').value;
@@ -153,18 +167,18 @@
             const password = document.getElementById('register-password').value;
             const phone = document.getElementById('register-phone').value;
             const resultDiv = document.getElementById('register-result');
-            
+
             resultDiv.innerHTML = 'Testing registration...';
             resultDiv.className = 'result loading';
-            
+
             try {
                 const response = await fetch(`${API_URL}/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        name, 
-                        email, 
-                        password, 
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password,
                         phone,
                         currentAddress: 'Test Address',
                         role: 'viewer'
@@ -172,9 +186,9 @@
                     mode: 'cors',
                     credentials: 'omit'
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (response.ok && data.token) {
                     resultDiv.className = 'result success';
                     resultDiv.innerHTML = `
@@ -184,7 +198,7 @@
                         <p>Email: ${email}<br>Password: ${password}</p>
                         <pre>${JSON.stringify(data, null, 2)}</pre>
                     `;
-                    
+
                     // Update the login email field with the new email
                     document.getElementById('login-email').value = email;
                 } else {
@@ -205,4 +219,5 @@
         });
     </script>
 </body>
+
 </html>
