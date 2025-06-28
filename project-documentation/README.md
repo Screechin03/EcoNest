@@ -4,10 +4,6 @@
 
 Boulevard is a modern property rental and booking platform that allows users to browse, search, and book properties for short-term stays. Originally launched as EcoNest, the platform has been rebranded to Boulevard while maintaining the same core functionality and features.
 
-## Documentation
-
-All project documentation has been moved to the `project-documentation` folder for better organization. Please refer to the [Table of Contents](project-documentation/TABLE_OF_CONTENTS.md) for a complete list of available documentation files.
-
 ## Core Features
 
 - **Property Listings**: Browse and search for properties with detailed information and images
@@ -53,14 +49,3 @@ The application follows a modern client-server architecture:
 - Tourists exploring new destinations
 
 Boulevard aims to provide a seamless booking experience while offering property owners an easy way to manage their listings and connect with potential guests.
-
-## Development Documentation
-
-For detailed development guides, deployment instructions, and implementation details, please refer to:
-
-- [Developer Guide](project-documentation/DEVELOPER_GUIDE.md) - Setup and development instructions
-- [Project Description](project-documentation/PROJECT_DESCRIPTION.md) - Detailed project overview
-- [Deployment Guide](project-documentation/DEPLOYMENT.md) - Deployment instructions
-- [Repository Cleanup](project-documentation/REPOSITORY_CLEANUP.md) - Recent repository cleanup details
-
-See the complete [Documentation Table of Contents](project-documentation/TABLE_OF_CONTENTS.md) for all available documentation.
